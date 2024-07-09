@@ -1,3 +1,4 @@
+import 'package:attendance/core/data_source/firebase_service.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -5,6 +6,14 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Center(
+        child: IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () async {
+          },
+        ),
+      ),
+    );
   }
 }
