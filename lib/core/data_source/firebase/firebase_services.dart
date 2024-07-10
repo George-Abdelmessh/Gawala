@@ -68,14 +68,23 @@ class FirebaseServices {
         await _firestore.collection(collection).doc(id).set(data);
       } else {
         /// Add with Auto-Generated ID
-        await _firestore.collection(collection).add(data);
+        final doc = _firestore.collection(collection).doc();
+        final Map<String, dynamic> dataWithId = data;
+        dataWithId['id'] = doc.id;
+        await doc.set(dataWithId);
       }
     } catch (e) {
       debugPrint("Error: $e");
     }
   }
 
-  static Stream<QuerySnapshot> getData({
+  static Future<QuerySnapshot> getData({
+    required final String collection,
+  }) async {
+    return await _firestore.collection(collection).get();
+  }
+
+  static Stream<QuerySnapshot> getDataStream({
     required final String collection,
   }) {
     return _firestore.collection(collection).snapshots();

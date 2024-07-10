@@ -9,26 +9,28 @@ class CustomTextButton extends StatelessWidget {
     this.bgColor,
     required this.onTap,
     this.radius = 19,
+    this.height = 50,
   });
 
   final String text;
   final Color? bgColor;
   final Function() onTap;
   final double radius;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: onTap,
-      height: 50,
+      height: height,
       minWidth: double.infinity,
-      color: bgColor?? AppColors.primaryColor,
+      color: bgColor ?? AppColors.primaryColor,
       textColor: Colors.white,
-      shape:  RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(radius))),
       child: Text(
         text,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
       ),
     );
   }
