@@ -12,7 +12,6 @@ class HomeCubit extends Cubit<HomeState> {
 
   static HomeCubit get(BuildContext context) => BlocProvider.of(context);
 
-
   Future<void> addNewTeam({
     required final String name,
   }) async {
@@ -33,7 +32,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Stream<QuerySnapshot>? getAllTeams()  {
+  Stream<QuerySnapshot>? getAllTeams() {
     try {
       return FirebaseServices.getDataStream(
         collection: TEAMS_COLLECTION,
@@ -42,5 +41,31 @@ class HomeCubit extends Cubit<HomeState> {
       debugPrint('Error: $e');
     }
     return null;
+  }
+
+  Future<void> addNewSubTeam({
+    required final String id,
+    required final String name,
+  }) async {
+    try {
+      emit(HomeLoadingState());
+      final doc = FirebaseServices.firestore
+          .collection(TEAMS_COLLECTION)
+          .doc(id)
+          .collection(SUB_TEAMS_COLLECTION)
+          .doc();
+
+      doc.set({
+        "id": doc.id,
+        "name": name,
+        "date_time": DateTime.now(),
+        "sub_team_count": 0,
+      });
+
+      emit(HomeSuccessState());
+    } catch (e) {
+      debugPrint('Error: $e');
+      emit(HomeErrorState());
+    }
   }
 }

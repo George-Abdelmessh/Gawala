@@ -17,7 +17,7 @@ class FirebaseServices {
   factory FirebaseServices() => _instance;
 
   static final FirebaseAuth _auth = FirebaseAuth.instance;
-  static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  static final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   static Future<User?> signUp(String email, String password) async {
     try {
@@ -65,10 +65,10 @@ class FirebaseServices {
     try {
       if (id != null) {
         /// Add with Custom ID
-        await _firestore.collection(collection).doc(id).set(data);
+        await firestore.collection(collection).doc(id).set(data);
       } else {
         /// Add with Auto-Generated ID
-        final doc = _firestore.collection(collection).doc();
+        final doc = firestore.collection(collection).doc();
         final Map<String, dynamic> dataWithId = data;
         dataWithId['id'] = doc.id;
         await doc.set(dataWithId);
@@ -81,20 +81,20 @@ class FirebaseServices {
   static Future<QuerySnapshot> getData({
     required final String collection,
   }) async {
-    return await _firestore.collection(collection).get();
+    return await firestore.collection(collection).get();
   }
 
   static Stream<QuerySnapshot> getDataStream({
     required final String collection,
   }) {
-    return _firestore.collection(collection).snapshots();
+    return firestore.collection(collection).snapshots();
   }
 
   static Future<DocumentSnapshot<Map<String, dynamic>>> getSingleDoc({
     required final String collection,
     required final String id,
   }) async {
-    return await _firestore.collection(collection).doc(id).get();
+    return await firestore.collection(collection).doc(id).get();
   }
 
   static Future<void> updateDoc({
@@ -102,13 +102,13 @@ class FirebaseServices {
     required final String id,
     required final Map<String, dynamic> data,
   }) async {
-    return await _firestore.collection(collection).doc(id).update(data);
+    return await firestore.collection(collection).doc(id).update(data);
   }
 
   static Future<void> deleteDoc({
     required final String collection,
     required final String id,
   }) async {
-    return await _firestore.collection(collection).doc(id).delete();
+    return await firestore.collection(collection).doc(id).delete();
   }
 }

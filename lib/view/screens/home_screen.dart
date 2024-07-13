@@ -6,6 +6,7 @@ import '../../core/app_helper/show_dialog.dart';
 import '../../core/constants/app_images.dart';
 import '../../core/style/app_colors.dart';
 import '../../model/team_model.dart';
+import '../widgets/custom_app_bar.dart';
 import '../widgets/team_card.dart';
 import '../widgets/add_team_form.dart';
 
@@ -23,30 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              AppImages.carrotLogo,
-              colorFilter:
-                  const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
-              width: 28,
-              height: 28,
-            ),
-            const SizedBox(width: 8),
-            const Text(
-              'Home Screen',
-              style: TextStyle(
-                fontWeight: FontWeight.w800,
-                color: AppColors.white,
-              ),
-            ),
-          ],
-        ),
-        centerTitle: true,
-      ),
+      appBar: customAppBar(title: 'HomeScreen', image:  AppImages.carrotLogo),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showPopupDialog(context, const AddTeamForm()),
         backgroundColor: AppColors.softOrange,
