@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
+import 'sub_team_screen.dart';
 import '../../controller/home/teams_cubit.dart';
+import '../../core/app_helper/app_navigator.dart';
 import '../../core/app_helper/show_dialog.dart';
 import '../../core/constants/app_images.dart';
 import '../../core/style/app_colors.dart';
@@ -20,13 +21,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late final TeamsCubit _cubit = TeamsCubit.get(context);
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(title: 'HomeScreen', image:  AppImages.carrotLogo),
+      appBar: customAppBar(title: 'HomeScreen', image: AppImages.carrotLogo),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showPopupDialog(context, const AddTeamForm()),
+        onPressed: () => showPopupDialog(
+          context,
+          AddTeamForm(
+            title: "Add New Team",
+            onAdd: (String name) => _cubit.addNewTeam(name: name),
+          ),
+        ),
         backgroundColor: AppColors.softOrange,
         child: const Icon(Icons.add),
       ),
@@ -38,9 +44,16 @@ class _HomeScreenState extends State<HomeScreen> {
             if (snapShot.hasData) {
               return ListView.separated(
                   itemBuilder: (context, i) {
+                    final Map<String, dynamic> data =
+                        snapShot.data!.docs[i].data() as Map<String, dynamic>;
                     return TeamCard(
-                      teamData: TeamModel.formMap(
-                        snapShot.data!.docs[i].data() as Map<String, dynamic>,
+                      teamData: TeamModel.formMap(data),
+                      onDeleteTap: () => _cubit.deleteTeam(teamId: data['id']),
+                      onTap: () => AppNavigator.push(
+                        context,
+                        SubTeamScreen(
+                          id: data['id'],
+                        ),
                       ),
                     );
                   },

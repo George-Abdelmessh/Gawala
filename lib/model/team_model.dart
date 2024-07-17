@@ -2,14 +2,14 @@ class TeamModel {
   final DateTime dateTime;
   final String id;
   final String name;
-  final int subTeamCount;
+  final int? subTeamCount;
   final int teamMembersCount;
 
   TeamModel({
     required this.dateTime,
     required this.id,
     required this.name,
-    required this.subTeamCount,
+    this.subTeamCount,
     required this.teamMembersCount,
   });
 

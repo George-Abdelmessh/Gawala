@@ -1,19 +1,21 @@
-import 'package:attendance/controller/home/teams_cubit.dart';
-import 'package:attendance/core/app_helper/app_validators.dart';
-import 'package:attendance/core/custom_widgets/custom_text_button.dart';
-import 'package:attendance/core/custom_widgets/custom_text_form_field.dart';
-import 'package:attendance/core/style/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/app_helper/app_validators.dart';
+import '../../core/custom_widgets/custom_text_button.dart';
+import '../../core/custom_widgets/custom_text_form_field.dart';
+import '../../core/style/app_colors.dart';
+
 class AddTeamForm extends StatefulWidget {
-  const AddTeamForm({super.key});
+  const AddTeamForm({super.key, required this.title, required this.onAdd});
+
+  final String title;
+  final Function(String name) onAdd;
 
   @override
   State<AddTeamForm> createState() => _AddTeamFormState();
 }
 
 class _AddTeamFormState extends State<AddTeamForm> {
-  late final TeamsCubit _cubit = TeamsCubit.get(context);
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final TextEditingController _controller = TextEditingController();
 
@@ -26,7 +28,8 @@ class _AddTeamFormState extends State<AddTeamForm> {
   void _onAddTap() {
     if (_key.currentState!.validate()) {
       Navigator.pop(context);
-      _cubit.addNewTeam(name: _controller.text);
+      widget.onAdd(_controller.text);
+      // _cubit.addNewTeam(name: _controller.text);
     }
   }
 
@@ -37,9 +40,9 @@ class _AddTeamFormState extends State<AddTeamForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
-            'Add new Team',
-            style: TextStyle(
+          Text(
+            widget.title,
+            style: const TextStyle(
               color: AppColors.primaryColor,
               fontSize: 20,
               fontWeight: FontWeight.w600,

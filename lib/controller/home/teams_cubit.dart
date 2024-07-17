@@ -1,10 +1,10 @@
-import 'package:attendance/core/data_source/firebase/firebase_services.dart';
-import 'package:attendance/params/team_params.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../params/team_params.dart';
 import '../../core/data_source/end_points.dart';
+import '../../core/data_source/firebase/firebase_services.dart';
 
 part 'teams_state.dart';
 
@@ -45,31 +45,55 @@ class TeamsCubit extends Cubit<TeamsState> {
     return null;
   }
 
+  Stream<QuerySnapshot>? getSubTeams(String docId) {
+    try {
+      return FirebaseServices.firestore
+          .collection(TEAMS_COLLECTION)
+          .doc(docId)
+          .collection(SUB_TEAMS_COLLECTION)
+          .snapshots();
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+    return null;
+  }
+
   Future<void> addNewSubTeam({
     required final String id,
     required final String name,
   }) async {
     try {
       emit(LoadingState());
-      final doc = FirebaseServices.firestore
-          .collection(TEAMS_COLLECTION)
-          .doc(id)
-          .collection(SUB_TEAMS_COLLECTION)
-          .doc();
-      doc.set(
+      final parentDoc =
+          FirebaseServices.firestore.collection(TEAMS_COLLECTION).doc(id);
+
+      final subDoc = parentDoc.collection(SUB_TEAMS_COLLECTION).doc();
+
+      subDoc.set(
         TeamParams(
-          id: doc.id,
+          id: subDoc.id,
           name: name,
           dateTime: DateTime.now(),
           teamMembersCount: 0,
         ).toJson(),
       );
 
+      _updateSubTeamCount(id);
+
       emit(SuccessState());
     } catch (e) {
       debugPrint('Error: $e');
       emit(ErrorState());
     }
+  }
+
+  Future<void> _updateSubTeamCount(String id) async {
+    final parentDoc =
+        FirebaseServices.firestore.collection(TEAMS_COLLECTION).doc(id);
+    final list = await parentDoc.collection(SUB_TEAMS_COLLECTION).get();
+    parentDoc.update({
+      "sub_team_count": list.docs.length,
+    });
   }
 
   Future<void> deleteTeam({
@@ -88,4 +112,25 @@ class TeamsCubit extends Cubit<TeamsState> {
     }
   }
 
+  Future<void> deleteSubTeam({
+    required final String teamId,
+    required final String subTeamId,
+  }) async {
+    try {
+      emit(LoadingState());
+      await FirebaseServices.firestore
+          .collection(TEAMS_COLLECTION)
+          .doc(teamId)
+          .collection(SUB_TEAMS_COLLECTION)
+          .doc(subTeamId)
+          .delete();
+
+      _updateSubTeamCount(teamId);
+
+      emit(SuccessState());
+    } catch (e) {
+      debugPrint('Error: $e');
+      emit(ErrorState());
+    }
+  }
 }
