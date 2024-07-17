@@ -52,7 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () => AppNavigator.push(
                         context,
                         SubTeamScreen(
-                          id: data['id'],
+                          teamId: data['id'],
+                          teamName: data['name'],
                         ),
                       ),
                     );

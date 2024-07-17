@@ -1,4 +1,5 @@
 import 'package:attendance/controller/home/teams_cubit.dart';
+import 'package:attendance/core/app_helper/app_navigator.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/app_helper/show_dialog.dart';
@@ -7,24 +8,27 @@ import '../../model/team_model.dart';
 import '../widgets/add_team_form.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/team_card.dart';
+import 'team_members_screen.dart';
 
 class SubTeamScreen extends StatelessWidget {
-  const SubTeamScreen({super.key, required this.id});
+  const SubTeamScreen(
+      {super.key, required this.teamId, required this.teamName});
 
-  final String id;
+  final String teamId;
+  final String teamName;
 
   @override
   Widget build(BuildContext context) {
     final TeamsCubit cubit = TeamsCubit.get(context);
     return Scaffold(
-      appBar: customAppBar(title: 'Sub Team Screen'),
+      appBar: customAppBar(title: teamName),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showPopupDialog(
           context,
           AddTeamForm(
             title: "Add Sub-Team",
             onAdd: (String name) => cubit.addNewSubTeam(
-              id: id,
+              id: teamId,
               name: name,
             ),
           ),
@@ -35,7 +39,7 @@ class SubTeamScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: StreamBuilder(
-          stream: cubit.getSubTeams(id),
+          stream: cubit.getSubTeams(teamId),
           builder: (context, snapShot) {
             if (snapShot.hasData) {
               return ListView.separated(
@@ -45,10 +49,17 @@ class SubTeamScreen extends StatelessWidget {
                     return TeamCard(
                       teamData: TeamModel.formMap(data),
                       onDeleteTap: () => cubit.deleteSubTeam(
-                        teamId: id,
+                        teamId: teamId,
                         subTeamId: data['id'],
                       ),
-                      onTap: () {},
+                      onTap: () => AppNavigator.push(
+                        context,
+                        TeamMembersScreen(
+                          teamId: teamId,
+                          subTeamId: data['id'],
+                          subTeamName: data['name'],
+                        ),
+                      ),
                     );
                   },
                   separatorBuilder: (context, i) {
