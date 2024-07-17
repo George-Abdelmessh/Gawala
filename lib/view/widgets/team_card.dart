@@ -28,45 +28,73 @@ class TeamCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    RowIconText(
-                      icon: Icons.abc,
-                      text: teamData.name,
-                      textStyle: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 16),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    RowIconText(
-                      icon: Icons.person,
-                      text: teamData.subTeamCount.toString(),
-                      space: 0,
-                      iconColor: AppColors.softOrange,
-                      textStyle: const TextStyle(
-                          fontSize: 14, color: AppColors.softOrange),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                RowIconText(
-                  icon: Icons.timelapse_sharp,
-                  text: DateFormat("dd/MM/yyyy - hh:mm")
-                      .format(teamData.dateTime),
-                  textStyle: const TextStyle(
-                    color: AppColors.lightGrey,
-                    fontSize: 14,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      RowIconText(
+                        icon: Icons.abc,
+                        text: teamData.name,
+                        textStyle: const TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 16),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      RowIconText(
+                        icon: Icons.account_tree,
+                        text: teamData.subTeamCount.toString(),
+                        space: 2,
+                        iconColor: AppColors.softOrange,
+                        textStyle: const TextStyle(
+                            fontSize: 14, color: AppColors.softOrange),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      RowIconText(
+                        icon: Icons.person,
+                        text: teamData.teamMembersCount.toString(),
+                        space: 2,
+                        iconColor: AppColors.softOrange,
+                        textStyle: const TextStyle(
+                            fontSize: 14, color: AppColors.softOrange),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    children: [
+                      RowIconText(
+                        icon: Icons.timelapse_sharp,
+                        text: DateFormat("dd/MM/yyyy - hh:mm")
+                            .format(teamData.dateTime),
+                        textStyle: const TextStyle(
+                          color: AppColors.lightGrey,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      GestureDetector(
+                        /// ToDo: handle delete method
+                        onTap: () {},
+                        child: const Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
-            const Spacer(),
+            // const Spacer(),
             const Icon(
               Icons.arrow_forward,
               size: 18,

@@ -5,30 +5,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/data_source/end_points.dart';
 
-part 'home_state.dart';
+part 'teams_state.dart';
 
-class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitialState());
+class TeamsCubit extends Cubit<TeamsState> {
+  TeamsCubit() : super(InitialState());
 
-  static HomeCubit get(BuildContext context) => BlocProvider.of(context);
+  static TeamsCubit get(BuildContext context) => BlocProvider.of(context);
 
   Future<void> addNewTeam({
     required final String name,
   }) async {
     try {
-      emit(HomeLoadingState());
+      emit(LoadingState());
       await FirebaseServices.addData(
         collection: TEAMS_COLLECTION,
+        /// ToDo: handle with params
         data: {
           "name": name,
           "date_time": DateTime.now(),
           "sub_team_count": 0,
+          "team_members_count": 0,
         },
       );
-      emit(HomeSuccessState());
+      emit(SuccessState());
     } catch (e) {
       debugPrint('Error: $e');
-      emit(HomeErrorState());
+      emit(ErrorState());
     }
   }
 
@@ -48,13 +50,13 @@ class HomeCubit extends Cubit<HomeState> {
     required final String name,
   }) async {
     try {
-      emit(HomeLoadingState());
+      emit(LoadingState());
       final doc = FirebaseServices.firestore
           .collection(TEAMS_COLLECTION)
           .doc(id)
           .collection(SUB_TEAMS_COLLECTION)
           .doc();
-
+      /// ToDo: handle with params
       doc.set({
         "id": doc.id,
         "name": name,
@@ -62,10 +64,10 @@ class HomeCubit extends Cubit<HomeState> {
         "sub_team_count": 0,
       });
 
-      emit(HomeSuccessState());
+      emit(SuccessState());
     } catch (e) {
       debugPrint('Error: $e');
-      emit(HomeErrorState());
+      emit(ErrorState());
     }
   }
 }

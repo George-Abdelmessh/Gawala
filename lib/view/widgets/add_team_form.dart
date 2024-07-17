@@ -1,4 +1,4 @@
-import 'package:attendance/controller/home/home_cubit.dart';
+import 'package:attendance/controller/home/teams_cubit.dart';
 import 'package:attendance/core/app_helper/app_validators.dart';
 import 'package:attendance/core/custom_widgets/custom_text_button.dart';
 import 'package:attendance/core/custom_widgets/custom_text_form_field.dart';
@@ -13,7 +13,7 @@ class AddTeamForm extends StatefulWidget {
 }
 
 class _AddTeamFormState extends State<AddTeamForm> {
-  late final HomeCubit _cubit = HomeCubit.get(context);
+  late final TeamsCubit _cubit = TeamsCubit.get(context);
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final TextEditingController _controller = TextEditingController();
 

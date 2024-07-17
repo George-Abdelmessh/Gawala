@@ -1,4 +1,4 @@
-import 'package:attendance/controller/home/home_cubit.dart';
+import 'package:attendance/controller/home/teams_cubit.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/app_helper/show_dialog.dart';
@@ -18,7 +18,7 @@ class SubTeamScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         // onPressed: () => showPopupDialog(context, const Placeholder()),
         onPressed: () {
-          HomeCubit.get(context).addNewSubTeam(id: id, name: 'Jac Sub Team');
+          TeamsCubit.get(context).addNewSubTeam(id: id, name: 'Jac Sub Team');
         },
         backgroundColor: AppColors.softOrange,
         child: const Icon(Icons.add),

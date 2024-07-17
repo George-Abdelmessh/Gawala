@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../controller/home/home_cubit.dart';
+import '../../controller/home/teams_cubit.dart';
 import '../../core/app_helper/show_dialog.dart';
 import '../../core/constants/app_images.dart';
 import '../../core/style/app_colors.dart';
@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final HomeCubit _cubit = HomeCubit.get(context);
+  late final TeamsCubit _cubit = TeamsCubit.get(context);
 
 
   @override
