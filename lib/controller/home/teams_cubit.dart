@@ -1,4 +1,5 @@
 import 'package:attendance/core/data_source/firebase/firebase_services.dart';
+import 'package:attendance/params/team_params.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,13 +20,12 @@ class TeamsCubit extends Cubit<TeamsState> {
       emit(LoadingState());
       await FirebaseServices.addData(
         collection: TEAMS_COLLECTION,
-        /// ToDo: handle with params
-        data: {
-          "name": name,
-          "date_time": DateTime.now(),
-          "sub_team_count": 0,
-          "team_members_count": 0,
-        },
+        data: TeamParams(
+          name: name,
+          dateTime: DateTime.now(),
+          subTeamCount: 0,
+          teamMembersCount: 0,
+        ).toJson(),
       );
       emit(SuccessState());
     } catch (e) {
@@ -56,13 +56,14 @@ class TeamsCubit extends Cubit<TeamsState> {
           .doc(id)
           .collection(SUB_TEAMS_COLLECTION)
           .doc();
-      /// ToDo: handle with params
-      doc.set({
-        "id": doc.id,
-        "name": name,
-        "date_time": DateTime.now(),
-        "sub_team_count": 0,
-      });
+      doc.set(
+        TeamParams(
+          id: doc.id,
+          name: name,
+          dateTime: DateTime.now(),
+          teamMembersCount: 0,
+        ).toJson(),
+      );
 
       emit(SuccessState());
     } catch (e) {
@@ -70,4 +71,21 @@ class TeamsCubit extends Cubit<TeamsState> {
       emit(ErrorState());
     }
   }
+
+  Future<void> deleteTeam({
+    required final String teamId,
+  }) async {
+    try {
+      emit(LoadingState());
+      await FirebaseServices.deleteDoc(
+        collection: TEAMS_COLLECTION,
+        id: teamId,
+      );
+      emit(SuccessState());
+    } catch (e) {
+      debugPrint('Error: $e');
+      emit(ErrorState());
+    }
+  }
+
 }

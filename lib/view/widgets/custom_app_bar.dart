@@ -33,6 +33,6 @@ AppBar customAppBar({
     ),
     centerTitle: true,
     leadingWidth: 0,
-    leading: SizedBox(width: 0,),
+    leading: const SizedBox(width: 0,),
   );
 }

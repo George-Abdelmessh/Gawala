@@ -1,8 +1,11 @@
+import 'package:attendance/controller/home/teams_cubit.dart';
 import 'package:attendance/core/app_helper/app_navigator.dart';
+import 'package:attendance/core/app_helper/show_dialog.dart';
 import 'package:attendance/view/screens/sub_team_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../core/custom_widgets/do_you_want_dialog.dart';
 import '../../core/style/app_colors.dart';
 import '../../model/team_model.dart';
 import '../cards/row_icon_text.dart';
@@ -82,8 +85,19 @@ class TeamCard extends StatelessWidget {
                         width: 8,
                       ),
                       GestureDetector(
-                        /// ToDo: handle delete method
-                        onTap: () {},
+                        onTap: () => showPopupDialog(
+                          context,
+                          DoYouWantDialog(
+                            title: 'Do You Want To Delete',
+                            deletedItem: 'item: ${teamData.name}',
+                            whenYesTap: ()
+                            {
+                              TeamsCubit.get(context)
+                                  .deleteTeam(teamId: teamData.id);
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
                         child: const Icon(
                           Icons.delete_forever,
                           color: Colors.red,
