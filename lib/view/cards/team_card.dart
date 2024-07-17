@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/app_helper/show_dialog.dart';
-import '../../controller/home/teams_cubit.dart';
 import '../../core/custom_widgets/do_you_want_dialog.dart';
 import '../../core/style/app_colors.dart';
 import '../../model/team_model.dart';
-import '../cards/row_icon_text.dart';
+import 'row_icon_text.dart';
 
 class TeamCard extends StatelessWidget {
   const TeamCard({

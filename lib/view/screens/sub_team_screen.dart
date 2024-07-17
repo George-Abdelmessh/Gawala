@@ -1,4 +1,4 @@
-import 'package:attendance/controller/home/teams_cubit.dart';
+import 'package:attendance/controller/team//teams_cubit.dart';
 import 'package:attendance/core/app_helper/app_navigator.dart';
 import 'package:flutter/material.dart';
 
@@ -7,12 +7,15 @@ import '../../core/style/app_colors.dart';
 import '../../model/team_model.dart';
 import '../widgets/add_team_form.dart';
 import '../widgets/custom_app_bar.dart';
-import '../widgets/team_card.dart';
+import '../cards/team_card.dart';
 import 'team_members_screen.dart';
 
 class SubTeamScreen extends StatelessWidget {
-  const SubTeamScreen(
-      {super.key, required this.teamId, required this.teamName});
+  const SubTeamScreen({
+    super.key,
+    required this.teamId,
+    required this.teamName,
+  });
 
   final String teamId;
   final String teamName;

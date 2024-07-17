@@ -5,7 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'controller/home/teams_cubit.dart';
+import 'controller/team//teams_cubit.dart';
+import 'controller/team_member/team_member_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => TeamsCubit()),
+        BlocProvider(create: (context) => TeamMemberCubit()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

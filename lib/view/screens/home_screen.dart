@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'sub_team_screen.dart';
-import '../../controller/home/teams_cubit.dart';
+import '../../controller/team//teams_cubit.dart';
 import '../../core/app_helper/app_navigator.dart';
 import '../../core/app_helper/show_dialog.dart';
 import '../../core/constants/app_images.dart';
 import '../../core/style/app_colors.dart';
 import '../../model/team_model.dart';
 import '../widgets/custom_app_bar.dart';
-import '../widgets/team_card.dart';
+import '../cards/team_card.dart';
 import '../widgets/add_team_form.dart';
 
 class HomeScreen extends StatefulWidget {

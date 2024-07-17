@@ -1,10 +1,10 @@
+import 'package:attendance/core/data_source/firebase/firebase_services.dart';
+import 'package:attendance/params/team_params.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:attendance/core/data_source/end_points.dart';
 
-import '../../params/team_params.dart';
-import '../../core/data_source/end_points.dart';
-import '../../core/data_source/firebase/firebase_services.dart';
 
 part 'teams_state.dart';
 
