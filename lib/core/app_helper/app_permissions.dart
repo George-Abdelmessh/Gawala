@@ -5,8 +5,8 @@ Future<void> requestPermissions() async {
 }
 
 Future<void> storagePermission() async {
-  final permission = await Permission.storage.status;
-  if (permission != PermissionStatus.granted) {
+  final status = await Permission.storage.status;
+  if (status != PermissionStatus.granted) {
     await Permission.storage.request();
   }
 }

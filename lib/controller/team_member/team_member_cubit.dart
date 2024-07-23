@@ -20,8 +20,6 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
 
   static TeamMemberCubit get(BuildContext context) => BlocProvider.of(context);
 
-  Uint8List? _image;
-
   Future<void> addTeamMember({
     required final BuildContext context,
     required final String teamId,
@@ -43,6 +41,28 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
       doc.set(finalParams.toJson());
 
       await qrScreenshot(context, doc.id, finalParams.name);
+      emit(TeamMemberSuccess());
+    } catch (e) {
+      debugPrint(e.toString());
+      emit(TeamMemberError());
+    }
+  }
+
+  Future<void> deleteTeamMember({
+    required final String teamId,
+    required final String subTeamId,
+    required final String memberId,
+  }) async {
+    try {
+      emit(TeamMemberLoading());
+      await FirebaseServices.firestore
+          .collection(TEAMS_COLLECTION)
+          .doc(teamId)
+          .collection(SUB_TEAMS_COLLECTION)
+          .doc(subTeamId)
+          .collection(TEAM_MEMBERS_COLLECTION)
+          .doc(memberId)
+          .delete();
       emit(TeamMemberSuccess());
     } catch (e) {
       debugPrint(e.toString());
@@ -88,25 +108,24 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
         delay: const Duration(seconds: 1),
       )
           .then(
-        (value) async {
-          _image = value as Uint8List?;
-          await requestPermissions();
-          await _saveLocalImage();
+        (Uint8List? image) async {
+          if (image != null) {
+            await requestPermissions();
+            await _saveLocalImage(image);
+          }
           showSuccessToast('Done');
         },
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
-  Future _saveLocalImage() async {
+  Future _saveLocalImage(Uint8List image) async {
     try {
-      if (_image != null) {
-        await ImageGallerySaver.saveImage(_image!);
-      }
+      await ImageGallerySaver.saveImage(image);
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

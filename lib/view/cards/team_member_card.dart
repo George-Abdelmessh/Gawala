@@ -1,9 +1,12 @@
 import 'package:attendance/controller/team_member/team_member_cubit.dart';
+import 'package:attendance/core/constants/app_size.dart';
 import 'package:attendance/model/team_member_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../core/app_helper/show_dialog.dart';
+import '../../core/custom_widgets/do_you_want_dialog.dart';
 import '../../core/style/app_colors.dart';
 import 'row_icon_text.dart';
 
@@ -14,10 +17,11 @@ class TeamMemberCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TeamMemberCubit cubit = TeamMemberCubit.get(context);
     return Stack(
       children: [
         Container(
-          height: 178,
+          height: AppSize.heightScale(context, 118),
           padding: const EdgeInsets.only(
             top: 18,
             right: 10,
@@ -61,15 +65,6 @@ class TeamMemberCard extends StatelessWidget {
                         fontSize: 16, color: AppColors.lightGrey),
                   ),
                   const SizedBox(height: 8),
-                  const RowIconText(
-                    icon: Icons.account_box,
-
-                    /// Todo:
-                    text: 'Geo Team',
-                    textStyle:
-                        TextStyle(fontSize: 16, color: AppColors.lightGrey),
-                  ),
-                  const SizedBox(height: 8),
                   RowIconText(
                     icon: Icons.timelapse_sharp,
                     text: DateFormat("dd/MM/yyyy - hh:mm")
@@ -84,8 +79,9 @@ class TeamMemberCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  /// Qr code
                   GestureDetector(
-                    onTap: () => TeamMemberCubit.get(context).qrScreenshot(
+                    onTap: () => cubit.qrScreenshot(
                       context,
                       data.id,
                       data.name,
@@ -101,8 +97,24 @@ class TeamMemberCard extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
+
+                  /// Delete
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => showPopupDialog(
+                      context,
+                      DoYouWantDialog(
+                        title: 'Do You Want To Delete',
+                        deletedItem: 'Member: ${data.name}',
+                        whenYesTap: () {
+                          cubit.deleteTeamMember(
+                            teamId: data.teamId,
+                            subTeamId: data.subTeamId,
+                            memberId: data.id,
+                          );
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
                     child: Container(
                       margin: const EdgeInsets.only(right: 8),
                       width: 30,
