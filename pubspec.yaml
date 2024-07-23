@@ -17,11 +17,15 @@ dependencies:
   cupertino_icons: ^1.0.6
   fluttertoast: ^8.2.6
   flutter_svg: ^2.0.10+1
+  qr_flutter: ^4.1.0
 
   # Controllers
   flutter_bloc: ^8.1.6
   firebase_auth: ^5.1.2
   intl: ^0.19.0
+  screenshot: ^3.0.0
+  image_gallery_saver: ^2.0.3
+  permission_handler: ^11.3.1
 
   # Data
   firebase_core: ^3.1.1

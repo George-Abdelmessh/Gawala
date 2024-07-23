@@ -1,8 +1,8 @@
-import 'package:attendance/core/constants/app_images.dart';
+import 'package:attendance/controller/team_member/team_member_cubit.dart';
 import 'package:attendance/model/team_member_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../core/style/app_colors.dart';
 import 'row_icon_text.dart';
@@ -32,15 +32,15 @@ class TeamMemberCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Column(
+              Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RowIconText(
                     icon: Icons.abc,
                     text: data.name,
-                    textStyle:
-                        const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                    textStyle: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 16),
                   ),
                   const SizedBox(height: 8),
                   RowIconText(
@@ -57,12 +57,14 @@ class TeamMemberCard extends StatelessWidget {
                   RowIconText(
                     icon: Icons.accessibility_sharp,
                     text: data.age.toString(),
-                    textStyle:
-                        const TextStyle(fontSize: 16, color: AppColors.lightGrey),
+                    textStyle: const TextStyle(
+                        fontSize: 16, color: AppColors.lightGrey),
                   ),
                   const SizedBox(height: 8),
                   const RowIconText(
                     icon: Icons.account_box,
+
+                    /// Todo:
                     text: 'Geo Team',
                     textStyle:
                         TextStyle(fontSize: 16, color: AppColors.lightGrey),
@@ -71,9 +73,10 @@ class TeamMemberCard extends StatelessWidget {
                   RowIconText(
                     icon: Icons.timelapse_sharp,
                     text: DateFormat("dd/MM/yyyy - hh:mm")
-                        .format(data.dateTime).toString(),
-                    textStyle:
-                        const TextStyle(fontSize: 16, color: AppColors.lightGrey),
+                        .format(data.dateTime)
+                        .toString(),
+                    textStyle: const TextStyle(
+                        fontSize: 16, color: AppColors.lightGrey),
                   ),
                 ],
               ),
@@ -81,10 +84,21 @@ class TeamMemberCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  SvgPicture.asset(
-                    AppImages.qr,
-                    width: 60,
-                    height: 60,
+                  GestureDetector(
+                    onTap: () => TeamMemberCubit.get(context).qrScreenshot(
+                      context,
+                      data.id,
+                      data.name,
+                    ),
+                    child: SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: QrImageView(
+                        data: data.id,
+                        version: QrVersions.auto,
+                        gapless: false,
+                      ),
+                    ),
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -118,7 +132,7 @@ class TeamMemberCard extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: AppColors.primaryColor),
-            child:  Text(
+            child: Text(
               data.position,
               style: const TextStyle(
                 fontSize: 14,
