@@ -1,12 +1,16 @@
 import 'package:attendance/core/constants/app_images.dart';
+import 'package:attendance/model/team_member_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/style/app_colors.dart';
 import 'row_icon_text.dart';
 
 class TeamMemberCard extends StatelessWidget {
-  const TeamMemberCard({super.key});
+  const TeamMemberCard({super.key, required this.data});
+
+  final TeamMemberModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -28,47 +32,48 @@ class TeamMemberCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Column(
+               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RowIconText(
                     icon: Icons.abc,
-                    text: 'teamData.name',
+                    text: data.name,
                     textStyle:
-                        TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                        const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   RowIconText(
                     icon: Icons.phone,
                     iconColor: AppColors.softOrange,
-                    text: '01062374445',
-                    textStyle: TextStyle(
+                    text: data.phone,
+                    textStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       color: AppColors.softOrange,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   RowIconText(
                     icon: Icons.accessibility_sharp,
-                    text: '25',
+                    text: data.age.toString(),
                     textStyle:
-                        TextStyle(fontSize: 16, color: AppColors.lightGrey),
+                        const TextStyle(fontSize: 16, color: AppColors.lightGrey),
                   ),
-                  SizedBox(height: 8),
-                  RowIconText(
+                  const SizedBox(height: 8),
+                  const RowIconText(
                     icon: Icons.account_box,
                     text: 'Geo Team',
                     textStyle:
                         TextStyle(fontSize: 16, color: AppColors.lightGrey),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   RowIconText(
                     icon: Icons.timelapse_sharp,
-                    text: '7/7/2024 05:30',
+                    text: DateFormat("dd/MM/yyyy - hh:mm")
+                        .format(data.dateTime).toString(),
                     textStyle:
-                        TextStyle(fontSize: 16, color: AppColors.lightGrey),
+                        const TextStyle(fontSize: 16, color: AppColors.lightGrey),
                   ),
                 ],
               ),
@@ -113,9 +118,9 @@ class TeamMemberCard extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: AppColors.primaryColor),
-            child: const Text(
-              'Team Leader',
-              style: TextStyle(
+            child:  Text(
+              data.position,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: AppColors.white,
