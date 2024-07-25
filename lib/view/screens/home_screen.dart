@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:attendance/core/style/app_colors.dart';
 
-import 'sub_team_screen.dart';
-import '../../controller/team//teams_cubit.dart';
-import '../../core/app_helper/app_navigator.dart';
+import '../../controller/nav_bar/nav_bar_cubit.dart';
+import '../../controller/nav_bar/nav_bar_state.dart';
+import '../../controller/team/teams_cubit.dart';
 import '../../core/app_helper/show_dialog.dart';
 import '../../core/constants/app_images.dart';
-import '../../core/style/app_colors.dart';
-import '../../model/team_model.dart';
-import '../widgets/custom_app_bar.dart';
-import '../cards/team_card.dart';
 import '../widgets/add_team_form.dart';
+import '../widgets/custom_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,13 +18,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   late final TeamsCubit _cubit = TeamsCubit.get(context);
+
+  final List<String> _titles = ['HomeScreen', 'SearchScreen', 'ProfileScreen', 'TakeAttendanceScreen'];
 
   @override
   Widget build(BuildContext context) {
+    final NavBarCubit cubit = NavBarCubit.get(context);
     return Scaffold(
-      appBar: customAppBar(title: 'HomeScreen', image: AppImages.carrotLogo),
-      floatingActionButton: FloatingActionButton(
+      appBar: customAppBar(title: _titles[cubit.currentIndex], image: AppImages.carrotLogo),
+      floatingActionButton: cubit.currentIndex == 0
+          ? FloatingActionButton(
         onPressed: () => showPopupDialog(
           context,
           AddTeamForm(
@@ -35,41 +44,45 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         backgroundColor: AppColors.softOrange,
         child: const Icon(Icons.add),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: StreamBuilder(
-          stream: _cubit.getAllTeams(),
-          builder: (context, snapShot) {
-            if (snapShot.hasData) {
-              return ListView.separated(
-                  itemBuilder: (context, i) {
-                    final Map<String, dynamic> data =
-                        snapShot.data!.docs[i].data() as Map<String, dynamic>;
-                    return TeamCard(
-                      teamData: TeamModel.formMap(data),
-                      onDeleteTap: () => _cubit.deleteTeam(teamId: data['id']),
-                      onTap: () => AppNavigator.push(
-                        context,
-                        SubTeamScreen(
-                          teamId: data['id'],
-                          teamName: data['name'],
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, i) {
-                    return const SizedBox(height: 8);
-                  },
-                  itemCount: snapShot.data!.docs.length);
-            }
-            return const Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primaryColor,
+      )
+          : null,
+      bottomNavigationBar: BlocBuilder<NavBarCubit, NavBarState>(
+        builder: (context, state) {
+          return BottomNavigationBar(
+            selectedItemColor: AppColors.primaryColor,
+            currentIndex: cubit.currentIndex,
+            unselectedItemColor: AppColors.black,
+            onTap: (index) {
+              cubit.changeNavBarIndex(index);
+              setState(() {}); // Trigger a rebuild to update the app bar title
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_filled),
+                label: 'Home',
               ),
-            );
-          },
-        ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Search',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add_box_rounded),
+                label: 'Take attendance',
+              ),
+            ],
+          );
+        },
+      ),
+      body: BlocBuilder<NavBarCubit, NavBarState>(
+        builder: (context, state) {
+          return SafeArea(
+            child: cubit.screens[cubit.currentIndex],
+          );
+        },
       ),
     );
   }

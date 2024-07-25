@@ -1,4 +1,5 @@
 import 'package:attendance/controller/auth/auth_cubit.dart';
+import 'package:attendance/controller/nav_bar/nav_bar_cubit.dart';
 import 'package:attendance/view/screens/home_screen.dart';
 import 'package:attendance/view/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(create: (context) => NavBarCubit()),
         BlocProvider(create: (context) => TeamsCubit()),
         BlocProvider(create: (context) => TeamMemberCubit()),
       ],
