@@ -15,8 +15,8 @@ class NavBarCubit extends Cubit<NavBarState> {
   List<Widget> screens = const [
     HomeScreenContent(),
     SearchScreen(),
-    ProfileScreen(),
     TakeAttendanceScreen(),
+    ProfileScreen(),
   ];
 
   void changeNavBarIndex (int index) {

@@ -18,33 +18,33 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   late final TeamsCubit _cubit = TeamsCubit.get(context);
 
-  final List<String> _titles = ['HomeScreen', 'SearchScreen', 'ProfileScreen', 'TakeAttendanceScreen'];
+  final List<String> _titles = [
+    'HomeScreen',
+    'SearchScreen',
+    'TakeAttendanceScreen',
+    'ProfileScreen',
+  ];
 
   @override
   Widget build(BuildContext context) {
     final NavBarCubit cubit = NavBarCubit.get(context);
     return Scaffold(
-      appBar: customAppBar(title: _titles[cubit.currentIndex], image: AppImages.carrotLogo),
+      appBar: customAppBar(
+          title: _titles[cubit.currentIndex], image: AppImages.carrotLogo),
       floatingActionButton: cubit.currentIndex == 0
           ? FloatingActionButton(
-        onPressed: () => showPopupDialog(
-          context,
-          AddTeamForm(
-            title: "Add New Team",
-            onAdd: (String name) => _cubit.addNewTeam(name: name),
-          ),
-        ),
-        backgroundColor: AppColors.softOrange,
-        child: const Icon(Icons.add),
-      )
+              onPressed: () => showPopupDialog(
+                context,
+                AddTeamForm(
+                  title: "Add New Team",
+                  onAdd: (String name) => _cubit.addNewTeam(name: name),
+                ),
+              ),
+              backgroundColor: AppColors.softOrange,
+              child: const Icon(Icons.add),
+            )
           : null,
       bottomNavigationBar: BlocBuilder<NavBarCubit, NavBarState>(
         builder: (context, state) {
@@ -66,12 +66,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: 'Search',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-              BottomNavigationBarItem(
                 icon: Icon(Icons.add_box_rounded),
                 label: 'Take attendance',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
               ),
             ],
           );

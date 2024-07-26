@@ -19,6 +19,8 @@ class CustomTextFormField extends StatelessWidget {
     this.minLines = 1,
     this.textInputType = TextInputType.text,
     this.label,
+    this.onSubmit,
+    this.onChange,
   });
 
   final String hint;
@@ -34,6 +36,8 @@ class CustomTextFormField extends StatelessWidget {
   final int maxLines;
   final int minLines;
   final TextInputType textInputType;
+  final Function(String value)? onSubmit;
+  final Function(String value)? onChange;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +59,8 @@ class CustomTextFormField extends StatelessWidget {
           obscureText: secureText,
           maxLines: maxLines,
           minLines: minLines,
+          onFieldSubmitted: onSubmit,
+          onChanged: onChange,
           keyboardType: textInputType,
           decoration: InputDecoration(
             constraints: minLines > 1
@@ -75,10 +81,8 @@ class CustomTextFormField extends StatelessWidget {
             // ),
 
             hintText: hint,
-            hintStyle:  TextStyle(
-              color:AppColors.lightGrey.withOpacity(0.5),
-              fontSize: 12
-            ),
+            hintStyle: TextStyle(
+                color: AppColors.lightGrey.withOpacity(0.5), fontSize: 12),
             // errorBorder: const OutlineInputBorder(
             //   borderSide: BorderSide(
             //     color: Colors.red,

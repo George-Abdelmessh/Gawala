@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:attendance/core/app_helper/app_toast.dart';
 import 'package:attendance/core/data_source/firebase/firebase_services.dart';
+import 'package:attendance/model/team_member_model.dart';
 import 'package:attendance/view/widgets/qr_screnshot_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,8 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
   TeamMemberCubit() : super(TeamMemberInitial());
 
   static TeamMemberCubit get(BuildContext context) => BlocProvider.of(context);
+
+  final List<TeamMemberModel> searchList = [];
 
   Future<void> addTeamMember({
     required final BuildContext context,
@@ -126,6 +129,52 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
       await ImageGallerySaver.saveImage(image);
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<void> search(String searchTerm) async {
+    try {
+      emit(TeamMemberLoading());
+      if (searchTerm.isEmpty) {
+        searchList.clear();
+        emit(TeamMemberSuccess());
+        return;
+      }
+      final teams =
+          await FirebaseServices.firestore.collection(TEAMS_COLLECTION).get();
+      searchList.clear();
+
+      // print(teams.docs)
+      for (var team in teams.docs) {
+        /// ToDo: Handle with sub-team and team-member count
+        final subTeams = await FirebaseServices.firestore
+            .collection(TEAMS_COLLECTION)
+            .doc(team.id)
+            .collection(SUB_TEAMS_COLLECTION)
+            .get();
+
+        for (var subTeam in subTeams.docs) {
+          final teamMembers = await FirebaseServices.firestore
+              .collection(TEAMS_COLLECTION)
+              .doc(team.id)
+              .collection(SUB_TEAMS_COLLECTION)
+              .doc(subTeam.id)
+              .collection(TEAM_MEMBERS_COLLECTION)
+              .get();
+
+          for (var member in teamMembers.docs) {
+            if (member
+                .data()['name']
+                .toLowerCase()
+                .contains(searchTerm.toLowerCase())) {
+              searchList.add(TeamMemberModel.formMap(member.data()));
+            }
+          }
+        }
+      }
+      emit(TeamMemberSuccess());
+    } catch (e) {
+      debugPrint('Error: $e');
     }
   }
 }
