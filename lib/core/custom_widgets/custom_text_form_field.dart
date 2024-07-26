@@ -41,7 +41,7 @@ class CustomTextFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null)
-           Text(
+          Text(
             label!,
             style: const TextStyle(
               fontSize: 16,
@@ -75,7 +75,10 @@ class CustomTextFormField extends StatelessWidget {
             // ),
 
             hintText: hint,
-            hintStyle: const TextStyle(color: Colors.black),
+            hintStyle:  TextStyle(
+              color:AppColors.lightGrey.withOpacity(0.5),
+              fontSize: 12
+            ),
             // errorBorder: const OutlineInputBorder(
             //   borderSide: BorderSide(
             //     color: Colors.red,

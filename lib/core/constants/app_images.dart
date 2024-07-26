@@ -20,4 +20,6 @@ class AppImages {
   static const String account = '$_svg/account.svg';
   static const String location = '$_svg/location.svg';
   static const String search = '$_svg/search.svg';
+
+  static const String qr = '$_svg/qr.svg';
 }
