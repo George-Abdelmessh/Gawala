@@ -26,6 +26,7 @@ dependencies:
   screenshot: ^3.0.0
   image_gallery_saver: ^2.0.3
   permission_handler: ^11.3.1
+  url_launcher: ^6.3.0
 
   # Data
   firebase_core: ^3.1.1

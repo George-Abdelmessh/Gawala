@@ -1,9 +1,11 @@
 import 'package:attendance/controller/team_member/team_member_cubit.dart';
+import 'package:attendance/core/app_helper/app_toast.dart';
 import 'package:attendance/core/constants/app_size.dart';
 import 'package:attendance/model/team_member_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/app_helper/show_dialog.dart';
 import '../../core/custom_widgets/do_you_want_dialog.dart';
@@ -14,6 +16,14 @@ class TeamMemberCard extends StatelessWidget {
   const TeamMemberCard({super.key, required this.data});
 
   final TeamMemberModel data;
+
+  Future<void> _onPhoneTap() async {
+    final Uri uri = Uri.parse("tel:+2${data.phone}");
+
+    if (!await launchUrl(uri)) {
+      showErrorToast('the phone number have a problem');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +57,17 @@ class TeamMemberCard extends StatelessWidget {
                         fontWeight: FontWeight.w600, fontSize: 16),
                   ),
                   const SizedBox(height: 8),
-                  RowIconText(
-                    icon: Icons.phone,
-                    iconColor: AppColors.softOrange,
-                    text: data.phone,
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.softOrange,
+                  GestureDetector(
+                    onTap: () => _onPhoneTap(),
+                    child: RowIconText(
+                      icon: Icons.phone,
+                      iconColor: AppColors.softOrange,
+                      text: data.phone,
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.softOrange,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
