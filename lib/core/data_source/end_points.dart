@@ -5,4 +5,5 @@ const String USER_COLLECTION = 'users';
 const String TEAMS_COLLECTION = 'teams';
 const String SUB_TEAMS_COLLECTION = 'sub_teams';
 const String TEAM_MEMBERS_COLLECTION = 'team_members';
+const String ATTENDANCE_COLLECTION = 'attendance';
 
