@@ -57,6 +57,17 @@ class FirebaseServices {
     }
   }
 
+  static User? getUserCredential() {
+    try {
+      final User? user = _auth.currentUser;
+
+      return user;
+    } catch (e) {
+      debugPrint("Error: $e");
+      return null;
+    }
+  }
+
   static Future<void> addData({
     required final String collection,
     required final Map<String, dynamic> data,

@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
       ),
       onPressed: onTap,
       minWidth: double.infinity,
-      height: 67,
+      // height: 67,
       child: child,
     );
   }
