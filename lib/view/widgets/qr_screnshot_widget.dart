@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-
 class QrScreenshotWidget extends StatelessWidget {
   const QrScreenshotWidget({
     super.key,
     required this.id,
     required this.name,
+    // required this.teamId,
+    // required this.subTeamId,
   });
 
   final String id;
+  // final String teamId;
+  // final String subTeamId;
   final String name;
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class QrScreenshotWidget extends StatelessWidget {
           height: 100,
           child: QrImageView(
             data: id,
+            // data: 'user_id:$id,team_id:$teamId,sub_team_id:$subTeamId',
             size: 320,
             version: QrVersions.auto,
             gapless: false,

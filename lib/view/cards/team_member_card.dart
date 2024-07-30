@@ -95,9 +95,11 @@ class TeamMemberCard extends StatelessWidget {
                   /// Qr code
                   GestureDetector(
                     onTap: () => cubit.qrScreenshot(
-                      context,
-                      data.id,
-                      data.name,
+                      context: context,
+                      memberId: data.id,
+                      // teamId: data.teamId,
+                      // subTeamId: data.subTeamId,
+                      memberName:data.name,
                     ),
                     child: SizedBox(
                       width: 60,
