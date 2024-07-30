@@ -6,13 +6,13 @@ class QrScreenshotWidget extends StatelessWidget {
     super.key,
     required this.id,
     required this.name,
-    // required this.teamId,
-    // required this.subTeamId,
+    required this.teamId,
+    required this.subTeamId,
   });
 
   final String id;
-  // final String teamId;
-  // final String subTeamId;
+  final String teamId;
+  final String subTeamId;
   final String name;
 
   @override
@@ -24,8 +24,7 @@ class QrScreenshotWidget extends StatelessWidget {
           width: 100,
           height: 100,
           child: QrImageView(
-            data: id,
-            // data: 'user_id:$id,team_id:$teamId,sub_team_id:$subTeamId',
+            data: 'user_id:$id,team_id:$teamId,sub_team_id:$subTeamId',
             size: 320,
             version: QrVersions.auto,
             gapless: false,

@@ -97,8 +97,8 @@ class TeamMemberCard extends StatelessWidget {
                     onTap: () => cubit.qrScreenshot(
                       context: context,
                       memberId: data.id,
-                      // teamId: data.teamId,
-                      // subTeamId: data.subTeamId,
+                      teamId: data.teamId,
+                      subTeamId: data.subTeamId,
                       memberName:data.name,
                     ),
                     child: SizedBox(

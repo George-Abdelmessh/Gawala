@@ -10,18 +10,30 @@ class AttendanceCubit extends Cubit<AttendanceState> {
 
   static AttendanceCubit get(BuildContext context) => BlocProvider.of(context);
 
-  Future<void> takeAttendance(String? id) async {
+  Future<void> takeAttendance(String? value) async {
     try {
-      if (id != null) {
+      if (value != null) {
+        // 'user_id:______,team_id:____,sub_team_id:_____';
+        final List<String> ids = value.split(','); // 3 index
+        // user_id:______,
+        // team_id:____,
+        // sub_team_id:_____
+        final Map<String, dynamic> finalData = {};
+
+        for (String pair in ids) {
+          final List<String> pairValues = pair.split(':'); // ["key", "value"]
+          finalData[pairValues[0]] = pairValues[1];
+        }
+
+        finalData['date_time'] = DateTime.now();
+
         await FirebaseServices.addData(
-            collection: ATTENDANCE_COLLECTION,
-            data: {
-              'user_id': id,
-              'date_time': DateTime.now(),
-            });
+          collection: ATTENDANCE_COLLECTION,
+          data: finalData,
+        );
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

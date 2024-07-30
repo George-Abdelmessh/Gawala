@@ -46,8 +46,8 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
       await qrScreenshot(
         context: context,
         memberId: doc.id,
-        // teamId: finalParams.team,
-        // subTeamId: finalParams.subTeam,
+        teamId: finalParams.team,
+        subTeamId: finalParams.subTeam,
         memberName: finalParams.name,
       );
       emit(TeamMemberSuccess());
@@ -100,8 +100,8 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
   Future<void> qrScreenshot({
     required final BuildContext context,
     required final String memberId,
-    // required final String teamId,
-    // required final String subTeamId,
+    required final String teamId,
+    required final String subTeamId,
     required final String memberName,
   }) async {
     try {
@@ -112,8 +112,8 @@ class TeamMemberCubit extends Cubit<TeamMemberState> {
             context,
             Material(
               child: QrScreenshotWidget(
-                // teamId: teamId,
-                // subTeamId: subTeamId,
+                teamId: teamId,
+                subTeamId: subTeamId,
                 id: memberId,
                 name: memberName,
               ),
