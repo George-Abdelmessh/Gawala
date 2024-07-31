@@ -12,6 +12,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   static ProfileCubit get(context) => BlocProvider.of(context);
 
   UserModel? userData;
+  bool isEditMode = false;
 
   Future<void> getUserData() async {
     try {
@@ -34,6 +35,31 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  Future<void> updateUserName(String name) async {
+    try {
+      updateEditValue();
+      emit(ProfileLoading());
+      final String? id = _getUserId();
+      if (id != null) {
+        await FirebaseServices.updateDoc(
+          collection: USER_COLLECTION,
+          id: id,
+          data: {
+            'name': name,
+            'last_update': DateTime.now(),
+          },
+        );
+
+        await getUserData();
+      } else {
+        emit(ProfileError());
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      emit(ProfileError());
+    }
+  }
+
   String? _getUserId() {
     final user = FirebaseServices.getUserCredential();
     if (user != null) {
@@ -41,5 +67,10 @@ class ProfileCubit extends Cubit<ProfileState> {
     } else {
       return null;
     }
+  }
+
+  void updateEditValue() {
+    isEditMode = !isEditMode;
+    emit(ProfileEditUpdate());
   }
 }

@@ -10,10 +10,12 @@ class CustomTextButton extends StatelessWidget {
     required this.onTap,
     this.radius = 19,
     this.height = 50,
+    this.textColor,
   });
 
   final String text;
   final Color? bgColor;
+  final Color? textColor;
   final Function() onTap;
   final double radius;
   final double height;
@@ -30,7 +32,11 @@ class CustomTextButton extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(radius))),
       child: Text(
         text,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: textColor ?? Colors.white,
+          fontSize: 18,
+        ),
       ),
     );
   }

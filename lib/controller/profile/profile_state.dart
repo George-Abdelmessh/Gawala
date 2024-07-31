@@ -9,3 +9,5 @@ final class ProfileLoading extends ProfileState {}
 final class ProfileSuccess extends ProfileState {}
 
 final class ProfileError extends ProfileState {}
+
+final class ProfileEditUpdate extends ProfileState {}
