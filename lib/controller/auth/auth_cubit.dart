@@ -84,4 +84,26 @@ class AuthCubit extends Cubit<AuthStates> {
       emit(AuthErrorState(e.toString()));
     }
   }
+
+  /// Check if the user is authenticated
+  bool loginCheck() {
+    try {
+      final user = FirebaseServices.getUserCredential();
+      if (user == null) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Check if the user is authenticated
+  void logout() {
+    try {
+      FirebaseServices.signOut();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 }

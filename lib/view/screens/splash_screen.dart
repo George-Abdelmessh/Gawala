@@ -1,4 +1,6 @@
+import 'package:attendance/controller/auth/auth_cubit.dart';
 import 'package:attendance/core/app_helper/app_navigator.dart';
+import 'package:attendance/view/screens/home_screen.dart';
 import 'package:attendance/view/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +19,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      AppNavigator.pushRemove(context, const LoginScreen());
+      if (AuthCubit.get(context).loginCheck()) {
+        AppNavigator.pushRemove(context, const HomeScreen());
+      } else {
+        AppNavigator.pushRemove(context, const LoginScreen());
+      }
     });
     // autoLoginHandler();
   }
